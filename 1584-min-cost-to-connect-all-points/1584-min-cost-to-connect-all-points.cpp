@@ -32,7 +32,7 @@ public:
             if(!vis[edge.point2]){
                 vis[edge.point2]=true;
                 result += edge.cost;        //thus adding it's cost in our result
-                count++;                    //and updating no of edges needed further
+                count--;                    //and updating no of edges needed further
                 for(int j=0; j<size; j++){  //putting new edges into the priority queue extending from point2
                     if(j==edge.point2)
                         continue;
