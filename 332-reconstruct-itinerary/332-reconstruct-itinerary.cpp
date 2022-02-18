@@ -1,6 +1,6 @@
 class Solution {
     //using multiset instead of set because values maybe repeated. Also set/ multiset is sorted so it gets sorted in lexical order itself
-    unordered_map <string, multiset <string>> maptickets;       
+    map <string, multiset <string>> maptickets;       
 public:
     vector<string> findItinerary(vector<vector<string>>& tickets) {
         for (vector <string> t: tickets)     //building graph
