@@ -5,15 +5,13 @@ public:
         for(auto n :nums)
             maxx[n]++;
         
-        int ans=0,ele=0;
+        int ans=INT_MIN,ele=0;
         for(auto n : maxx){
-            cout<<n.first<<n.second;
-            if(ans<n.second){
-                ans=n.second;
-                ele=n.first;
+            if(nums.size()/2<n.second){
+                ans = max(ans, n.first);
             }
         }
         
-        return ele;
+        return ans;
     }
 };
