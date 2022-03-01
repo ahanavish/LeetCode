@@ -1,30 +1,33 @@
 class Solution {
 public:
-    vector<string> summaryRanges(vector<int>& arr) {
-        int n = arr.size(); 
-        vector<string> ans;
-        string temp = ""; 
-        
-        for(int i = 0; i < n; i++) 
-        {
-            int j = i; 
-            while(j + 1 < n && arr[j + 1] == arr[j] + 1)
-                j++;
-            
-            if(j > i)
-            {
-                temp += to_string(arr[i]); 
-                temp += "->"; 
-                temp += to_string(arr[j]); 
-            }
-            else 
-                temp += to_string(arr[i]); 
-            
-            ans.push_back(temp);
-            temp = ""; 
-            i = j; 
+    vector<string> summaryRanges(vector<int>& nums) {
+        int n=nums.size(); 
+        vector <string> ans;
+        if(n == 1){
+            ans.push_back(to_string(nums[0]));
+            return ans;
         }
         
+        for(int i=0; i<n; i++){
+            string temp = to_string(nums[i]);
+            bool t = false;
+            while(i<n-1 && nums[i]+1 == nums[i+1]){
+                i++;
+                t = true;
+            }
+            if(t){
+                temp += "->";
+                temp += to_string(nums[i]);
+            }
+            ans.push_back(temp);
+        }
+
         return ans;
     }
 };
+
+
+
+
+
+ 
