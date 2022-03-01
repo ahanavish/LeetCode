@@ -15,9 +15,9 @@ public:
                 i++;
                 t = true;
             }
-            if(t){
+            if(t)
                 temp += "->" + to_string(nums[i]);
-            }
+            
             ans.push_back(temp);
         }
 
