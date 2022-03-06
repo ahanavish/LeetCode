@@ -1,38 +1,21 @@
 class Solution {
 public:
     int deleteAndEarn(vector<int>& nums) {
-        unordered_map<int,int>mp;
-        for(auto x:nums)
-            mp[x]++;
-        vector<int>v;
-		
-		//Counting frequency
-        for(auto it:mp)
-        {
-            v.push_back(it.first);
-        }
-        int n=v.size();
-        if(n==1)
-            return nums[0] * mp[nums[0]];
+        int len=nums.size(), maxele=0;
+        for(int i=0;i<len;i++)
+          maxele=max(maxele,nums[i]);   //found max element 
+
+        vector<long long> count(maxele+1,0);
+        for(int i=0;i<len;i++)
+            count[nums[i]]++;           //counting frequency of each element
+
+        //deciding which element when inserted would result in more points. 
+        //Eg: for [3, 4, 2], we start with inserting 2 using count array, resulting in count[2]=2
+        //Then we check for 3, inserting 3 would mean not inserting 2, resulting in count[3]=3
+        //Then we check for 4, inserting 4 would mean not inserting 3, but inserting 2, resulting in count[4]=4+2=6
+        for(int i=2;i<=maxele;i++)
+            count[i]=max(i*count[i]+count[i-2],count[i-1]);
         
-		//Sorting because we will start deleting from last 
-        sort(v.begin(),v.end());
-        
-        vector<int>dp(n);
-        for(int i=0;i<n;i++)
-        {
-            dp[i]=v[i] * mp[v[i]];
-        }
-        //dp[i]->ans till i th index from last 
-        dp[n-2] = v[n-2]+1 == v[n-1] ? max(dp[n-1],dp[n-2]) : dp[n-2]+dp[n-1];
-        for(int i=n-3;i>=0;i--)
-        {
-            if(i+2<n)
-            {
-                dp[i] = v[i]+1 ==v[i+1] ? max(dp[i+1],dp[i+2]+dp[i]) : (dp[i]+dp[i+1]);
-            }
-        }
-        return max(dp[0],dp[1]);
-        
+        return count[maxele];
     }
 };
