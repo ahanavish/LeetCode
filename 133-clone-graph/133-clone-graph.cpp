@@ -18,30 +18,43 @@ public:
     }
 };
 */
-
+ 
 class Solution {
 public:
     Node* cloneGraph(Node* node) {
-        if(node == NULL)                    //if graph is empty, returning null
+        if(node == NULL)
             return NULL;
         
-        vector <Node*> vis(101, NULL);      //visited array
-        Node* root = new Node(node->val);   //created new root and initialised its value with value of old root
-        vis[node->val]=root;                //marked it visited
-        dfs(node, root, vis);
-        return root;
-    }
-    
-    void dfs(Node* node, Node* root, vector <Node*>& vis){
-        for(auto n : node->neighbors){      //all the neighbors are approached next
-            if(vis[n->val]==NULL){          //if not visited yet
-                Node* no = new Node(n->val);            //create new node
-                vis[n->val]=no;                         //marking it visited
-                (root->neighbors).push_back(no);        //made new node(i.e no) as neighbor of node of cloned graph
-                dfs(n, no, vis);                        
+        vector <int> vis(101, 0);   //to keep track of nodes visited
+        vector <Node*> add_nodes(101, NULL);    //to store address of each nodes
+        
+        Node* root = new Node(node->val);
+        add_nodes[node->val]=root;
+        
+        queue <Node*> bfs;
+        bfs.push(node);
+        
+        while(!bfs.empty()){
+            Node* temp = bfs.front();
+            bfs.pop();
+            Node* new_node= add_nodes[temp->val];
+                
+            if(!vis[temp->val]){
+                vis[temp->val] = 1;
+                for(auto n: temp->neighbors){
+                    if(add_nodes[n->val]==NULL){
+                        Node* child = new Node(n->val);
+                        new_node->neighbors.push_back(child);
+                        add_nodes[n->val]=child;
+                    }
+                    else
+                        new_node->neighbors.push_back(add_nodes[n->val]);
+                    
+                    bfs.push(n);
+                }
             }
-            else
-                (root->neighbors).push_back(vis[n->val]);       //already visited so just inserting it into neighbors
+               
         }
+        return root;
     }
 };
