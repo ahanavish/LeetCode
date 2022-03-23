@@ -1,3 +1,4 @@
+[Discussion Post (created on 24/2/2022 at 2:11)](https://leetcode.com/problems/clone-graph/discuss/1877558/Easy-C%2B%2B-Solution-or-BFS-or-Explained-or-Using-array)  
 <h2>  Clone Graph</h2><hr><div><p>Given a reference of a node in a <strong><a href="https://en.wikipedia.org/wiki/Connectivity_(graph_theory)#Connected_graph" target="_blank">connected</a></strong> undirected graph.</p>
 
 <p>Return a <a href="https://en.wikipedia.org/wiki/Object_copying#Deep_copy" target="_blank"><strong>deep copy</strong></a> (clone) of the graph.</p>
