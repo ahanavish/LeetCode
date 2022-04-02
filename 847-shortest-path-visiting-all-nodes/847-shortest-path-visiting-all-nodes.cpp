@@ -1,41 +1,48 @@
 class Solution {
 public:
+    class tuple{
+        public:
+        int node;
+        int mask;
+        int cost;
+        
+        tuple(int node, int mask, int cost){
+            this->node = node;
+            this->mask = mask;
+            this->cost = cost;
+        }
+    };
+    
     int shortestPathLength(vector<vector<int>>& graph) {
-        int nodes = graph.size();
-        if(nodes == 1) return 0;
-        
-        //Store the visited sequence for each state using bit manipulation (ex. 1010 -> like 1st and 4th is visited) 
-        //each time check that position is visited for that sequence other wise add in queue and once you will get all 11111 return the shortest path
-        
-        
-        int finalState =((1<<nodes) - 1);
-        queue<pair<int , int>> que;
-        
-        for(int i = 0 ; i < nodes ; i++){
-            que.push({i , 1<<i});
+        int n = graph.size();
+        queue <tuple> q;
+        set<pair<int, int>> vis;
+        for(int i=0; i<n; i++){
+            int mask=(1<<i);
+            tuple node(i, mask, 1);
+            q.push(node);
+            vis.insert({i, mask});
         }
         
-        vector<vector<int>> vis(nodes , vector<int>(finalState, -1));
+        int all = (1<<n)-1;
         
-        int shortestPath = 0;
-        while(!que.empty()){
-            int sz = que.size();
-            shortestPath++;
-            while(sz--){    
-                auto cur = que.front();
-                que.pop();
-                for(auto x : graph[cur.first]){
-                    int state = 1<<x | cur.second;
-                    if(state == finalState) return shortestPath;
-                    if(vis[x][state] != -1) continue;
-                    vis[x][state] = 1;
-                    
-                    pair<int , int> nxt = {x , state};
-                    que.push(nxt);                    
-                 }
+        while(!q.empty()){
+            tuple curr = q.front();
+            q.pop();
+            if(curr.mask == all)
+                return curr.cost-1;
+            
+            for(auto &adj : graph[curr.node]){
+                int bothvisitedmask = curr.mask;
+                bothvisitedmask = bothvisitedmask | (1<<adj);
+                tuple node(adj, bothvisitedmask, curr.cost+1);
+                
+                if(vis.find({adj, bothvisitedmask})==vis.end()){
+                    vis.insert({adj, bothvisitedmask});
+                    q.push(node);
+                }
             }
-        }
-        return -1;
-        
+        } 
+        return 0;
     }
 };
