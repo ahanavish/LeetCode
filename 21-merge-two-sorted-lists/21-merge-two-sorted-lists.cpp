@@ -11,51 +11,39 @@
 class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
-        if(!list1) return list2;
-        if(!list2) return list1;
+        if(list1==NULL)
+            return list2;
+        if(list2==NULL)
+            return list1;
         
-        ListNode* head=(list1->val<=list2->val)? list1:list2;
-        
-        ListNode *r1=list1,*r2=list2;
-        
-        while(r1&&r2)
-        {
-            if(r1->val<=r2->val )
-            {
-                ListNode* next=r1,*prev=r1;
-                while(next)
-                {
-                    if(next->val>r2->val) break;
-                    else
-                    {
-                     prev=next;
-                        next=next->next;
-                    }
-                }
-             r1=next;
-                prev->next=r2;
-            }
-            else
-            {
-                ListNode* next=r2,*prev=r2;
-                while(next)
-                {
-                    if(next->val>=r1->val) break;
-                    else
-                    {
-                     prev=next;
-                        next=next->next;
-                    }
-                }
-             r2=next;
-                prev->next=r1;
-                
-            }
-            
-            
+        ListNode* root;
+        if(list1->val<list2->val){
+            root = list1;
+            list1 = list1->next;
+        }
+        else{
+            root = list2;
+            list2 = list2->next;
         }
         
-        return head;
+        ListNode* curr=root;
+        while(list1&&list2){
+            if(list1->val<list2->val){
+                curr->next = list1;
+                list1 = list1->next;
+            }
+            else{
+                curr->next = list2;
+                list2 = list2->next;
+            }
+            curr = curr->next;
+        }
         
+        if(list1==NULL)
+            curr->next = list2;
+        else if(list2==NULL)
+            curr->next = list1;
+        
+        return root;
     }
 };
