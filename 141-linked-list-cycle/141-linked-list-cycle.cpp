@@ -13,14 +13,13 @@ public:
             return false;
         
         ListNode* p = head->next, *q = head;
-        while(p->next!=NULL && p->next->next!=NULL && q->next!=NULL && p!=q){
+        while(p && p->next && q){
             p = p->next->next;
             q = q->next;
+            if(p==q)
+                return true;
         }
-        
-        if(p==q)
-            return true;
-        else
-            return false;
+        return false;
     }
 };
+
