@@ -1,26 +1,16 @@
 class Solution {
 public:
-    map <int, int> gainsforeach;
-    map <int, int> uptil;
     int deleteAndEarn(vector<int>& nums) {
         sort(nums.begin(), nums.end());
+        int max_ele = nums[nums.size()-1];
         
-        int max = nums[nums.size()-1];
+        vector <int> count(max_ele+1, 0);
         for(int i=0; i<nums.size(); i++)
-            gainsforeach[nums[i]] += nums[i];
+            count[nums[i]]++;
         
-        return dp(max);
-    }
-    
-    int dp(int n){
-        if(n==0)
-            return 0;
-        if(n==1)
-            return gainsforeach[n];
+        for(int i=2; i<=max_ele; i++)
+            count[i]=max(i*count[i]+count[i-2], count[i-1]);
         
-        if(uptil.find(n)==uptil.end())
-            uptil[n] = max(dp(n-1), dp(n-2)+gainsforeach[n]);
-        
-        return uptil[n];
+        return count[max_ele];
     }
 };
