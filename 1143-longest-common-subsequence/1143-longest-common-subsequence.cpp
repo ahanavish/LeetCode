@@ -15,10 +15,8 @@ public:
             return 0;
         
         if(dp[i][j]==-1){
-            if(text1[i]==text2[j]){
+            if(text1[i]==text2[j])
                 dp[i][j]=help(i-1, j-1, dp)+1;
-                cout<<text1[i]<<text2[j]<<" ";
-            }
             else
                 dp[i][j]=max(help(i-1, j, dp), help(i, j-1, dp));
         }
