@@ -14,13 +14,14 @@ public:
         if(i<0 || j<0)
             return 0;
         
-        if(dp[i][j]==-1){
-            if(text1[i]==text2[j])
-                dp[i][j]=help(i-1, j-1, dp)+1;
-            else
-                dp[i][j]=max(help(i-1, j, dp), help(i, j-1, dp));
-        }
+        if(dp[i][j]!=-1)
+                return dp[i][j];
         
-        return dp[i][j];
+            if(text1[i]==text2[j])
+                return dp[i][j]=help(i-1, j-1, dp)+1;
+            else
+                return dp[i][j]=max(help(i-1, j, dp), help(i, j-1, dp));
+        
+    
     }
 };
