@@ -11,17 +11,31 @@
  */
 class Solution {
 public:
-    
-    TreeNode* inorder(TreeNode *cur, TreeNode *ans) {
-        if (cur == nullptr) return ans;
-        TreeNode *now = inorder(cur->left, ans);
-        now->right = new TreeNode(cur->val);
-        return inorder(cur->right, now->right);
-    }
-    
     TreeNode* increasingBST(TreeNode* root) {
-        TreeNode *cur = new TreeNode();
-        inorder(root, cur);
-        return cur->right;
+        if (root == NULL) return NULL;
+        TreeNode* newroot=NULL, *newcurr;
+        stack<TreeNode*> stck;
+        TreeNode* curr=root;
+        while (curr || !stck.empty()) {
+            while (curr) {
+                stck.push(curr);
+                curr=curr->left;
+            }
+            
+            curr=stck.top();
+            stck.pop();
+            if (newroot == NULL) {
+                newroot = new TreeNode(curr->val);
+                newcurr = newroot;
+            }
+            else {
+                newcurr->right = new TreeNode(curr->val);
+                newcurr = newcurr->right;
+            }
+            
+            curr=curr->right;
+        }
+        
+        return newroot;
     }
 };
