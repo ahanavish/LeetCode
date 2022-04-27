@@ -61,8 +61,8 @@ public:
             return s;
         }
         
-        for(auto pairs:m){           //if whole graph is not completely connected, sort the char in disconnected graphs
-            int i=pairs.first;
+        for(auto pairs:m){           //if whole graph is not completely connected, sort the char in disconnected 
+            int i=pairs.first;       // graphs individually
             string s=pairs.second;
             sort(s.begin(), s.end(), greater<char>());
             m[i]=s;
