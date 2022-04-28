@@ -1,43 +1,60 @@
 class Solution {
 public:
-    struct cell {
-        int x, y, effort;
-        
-        bool operator<(const cell& other) const {       //priority is given according to effort
-            return this->effort > other.effort;
-        }
-    };
-
-    int minimumEffortPath(vector<vector<int>>& heights) {
-        int m = heights.size(), n = heights[0].size();
-        vector<vector<int>> min_effort(m, vector<int>(n, INT_MAX));         //constructed 2D array of mXn with each index = INT_MAX
-        vector<pair<int, int>> directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};             //the possible movements
-        min_effort[0][0] = 0;       //when starting with (0, 0)
-        priority_queue<cell> pq;    //declaring a priority queue for cell
-        pq.push({0, 0, 0});         //pushing for the (0, 0) with weight=0
-        
-        while (!pq.empty()) {
-            cell curr = pq.top();   
-            pq.pop();
-
-            for (auto [dx, dy] : directions) {      //trying out all directions
-                int neighx = curr.x + dx;
-                int neighy = curr.y + dy;
-                if (!isValid(neighx, neighy, m, n))     
-                    continue;
-                
-                
-                int effort_from_curr = max(curr.effort, abs(heights[curr.x][curr.y] - heights[neighx][neighy]));   
-                if (effort_from_curr < min_effort[neighx][neighy]) {//if this path has lesser efforts 
-                    min_effort[neighx][neighy] = effort_from_curr;  //updating min effort
-                    pq.push({neighx, neighy, effort_from_curr});    //push it into queue to be processed
-                }
-            }
-        }
-        return min_effort[m-1][n-1];
+    
+    vector<pair<int,int>> directions = {{1,0},{0,1},{-1,0},{0,-1}};    
+    
+    bool is_safe(vector<vector<int>>& heights, int row, int col){
+        return row >= 0 && row < heights.size() && 
+               col >= 0 && col < heights[0].size() &&
+               heights[row][col] != -1;
     }
     
-    bool isValid(int x, int y, int m, int n) {
-        return x >= 0 && x < m && y >= 0 && y < n;
+    vector<vector<int>> find_min_efforts(vector<vector<int>>& heights){
+        
+        vector<vector<int>> min_efforts(heights.size(), 
+                                         vector<int>(heights[0].size(), INT_MAX));
+        
+        priority_queue<pair<int,pair<int,int>>, 
+                       vector<pair<int,pair<int,int>>>, 
+                       greater<pair<int,pair<int,int>>>> min_pq;
+        
+        min_efforts[0][0] = 0;
+        
+        min_pq.push({0,{0,0}});
+        
+        int row, col, next_row, next_col, 
+            current_effort, next_effort, max_effort = 0;            
+        
+        while(!min_pq.empty()){
+            row = min_pq.top().second.first;
+            col = min_pq.top().second.second;
+            current_effort = min_pq.top().first;
+            
+            min_pq.pop();
+            
+            for(pair<int,int> direction : directions){
+                next_row = row + direction.first;
+                next_col = col + direction.second;
+                
+                if(!is_safe(heights, next_row, next_col))
+                    continue;
+                
+                next_effort = abs(heights[next_row][next_col] - heights[row][col]);
+                max_effort = max(current_effort, next_effort);
+                
+                if(max_effort < min_efforts[next_row][next_col]){
+                    min_efforts[next_row][next_col] = max_effort;
+                    min_pq.push({max_effort, {next_row, next_col}});
+                }                
+            }                
+        }
+        
+        return min_efforts;        
+    }
+    
+    int minimumEffortPath(vector<vector<int>>& heights) {        
+        
+        vector<vector<int>> min_efforts = find_min_efforts(heights);        
+        return min_efforts.back().back();
     }
 };
