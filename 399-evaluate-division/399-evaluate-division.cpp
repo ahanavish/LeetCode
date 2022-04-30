@@ -15,7 +15,7 @@ public:
             if(find(marked.begin(), marked.end(), succ.first) == marked.end()) {    // already visited or not      
                 if(succ.first.compare(noded) == 0)                                  //if destination is found
                     return succ.second;           
-                marked.push_back(succ.first);                 
+                marked.push_back(succ.first);           //if not found, push into marked so that we dont visit it again
                 maxx = max(succ.second * dfs(succ.first, noded, curr, res, marked), maxx);
             } 
         }
