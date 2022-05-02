@@ -1,19 +1,19 @@
 class Solution {
 public:
-    vector<int> sortArrayByParity(vector<int>& nums) {
-        int i=0, j=nums.size()-1;
-        while(i<j){
-            if(nums[j]%2==0){
-                if(nums[i]%2==1){
-                    int temp = nums[i];
-                    nums[i] = nums[j];
-                    nums[j--] = temp;
-                }
-                i++;
-            }
-            else
-                j--;
+    vector<int> sortArrayByParity(vector<int>& v) {
+        // initialising 2 pointers
+        int i = 0, j = v.size() - 1, len = v.size();
+        if (len < 2) return v;
+        while (true) {
+            // moving to the first odd number with i
+            while (i < len && !(v[i] % 2)) i++;
+            // moving to the first even number with j
+            while (j && v[j] % 2) j--;
+			// checking if we are still in a valid scenario, otherwise we exit
+            if (i >= j) break;
+			// if so, we swap and update i and j
+            swap(v[i++], v[j--]);
         }
-        return nums;
+        return v;
     }
 };
