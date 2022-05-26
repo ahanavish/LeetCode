@@ -1,38 +1,42 @@
 class Solution {
 public:
-    int R, C;
-    bool isLive(int status) {
-        return status == 1;
-    }
-    int getLiveNeighborsCnt(int row, int col, vector<vector<int>>& board) {
-        int cnt = 0;
-        cnt += row - 1 >= 0 && board[row - 1][col] ? 1 : 0;
-        cnt += row + 1 < R && board[row + 1][col] ? 1 : 0;
-        cnt += col - 1 >= 0 && board[row][col - 1] ? 1 : 0;
-        cnt += col + 1 < C && board[row][col + 1] ? 1 : 0;
-        cnt += row - 1 >= 0 && col - 1 >= 0 && board[row - 1][col - 1] ? 1 : 0;
-        cnt += row - 1 >= 0 && col + 1 < C && board[row - 1][col + 1] ? 1 : 0;
-        cnt += row + 1 < R && col - 1 >= 0 && board[row + 1][col - 1] ? 1 : 0;
-        cnt += row + 1 < R && col + 1 < C && board[row + 1][col + 1] ? 1 : 0;
-        
-        return cnt;
-    }
     void gameOfLife(vector<vector<int>>& board) {
-        R = board.size(), C = board[0].size();
-		int liveNeighborsCnt;
-		// store current board state
-        vector<vector<int>> tempBoard = board;        
-        for(int r = 0; r < R; r++) {
-            for(int c = 0; c < C; c++) {
-				// compute number of live neighbors
-                liveNeighborsCnt = getLiveNeighborsCnt(r, c, tempBoard);
-				// Apply conditions and update state of board
-                if(isLive(board[r][c])) {
-                    if(liveNeighborsCnt < 2 || liveNeighborsCnt > 3) board[r][c] = 0;
-                } else {
-                    board[r][c] = liveNeighborsCnt == 3 ? 1 : 0;
-                }
+        int n = board.size();
+        int m = board[0].size();
+        
+        for(int i=0; i<board.size(); i++){
+            for(int j=0; j<board[0].size(); j++){
+                int cnt = 0;
+                
+                // Conditions to check if live state is present vertically and horizontally
+                if(i>0 && board[i-1][j]>=1) cnt++;
+                if(i<n-1 && board[i+1][j]>=1) cnt++; 
+                if(j>0 && board[i][j-1]>=1) cnt++; 
+                if(j<m-1 && board[i][j+1]>=1) cnt++;
+                
+                // Conditions to check if live state is present diagonally
+                if(i>0 && j>0 && board[i-1][j-1]>=1) cnt++; 
+                if(i>0 && j<m-1 && board[i-1][j+1]>=1) cnt++; 
+                if(i<n-1 && j>0 && board[i+1][j-1]>=1) cnt++; 
+                if(i<n-1 && j<m-1 && board[i+1][j+1]>=1) cnt++; 
+                
+                // Replacing live state (1) as dead state (0) as 2 if cnt<2 OR cnt>3
+                // Replacing dead state (0) as alive state (0) as -1 if cnt==3
+				
+                if(board[i][j]==1 && (cnt<2 || cnt>3)) board[i][j]=2;
+                
+                if(board[i][j]==0 && cnt==3) board[i][j]=-1;
             }
         }
+        
+		// Replacing all the 2s to 0 and -1s to 1
+        for(int i=0; i<board.size(); i++){
+            for(int j=0; j<board[0].size(); j++){
+                if(board[i][j]==2) board[i][j]=0;
+                if(board[i][j]==-1) board[i][j]=1;
+            }
+        }
+            
+        return;
     }
 };
