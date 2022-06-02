@@ -1,30 +1,42 @@
 class Solution {
 public:
-    string simplifyPath(string path)
-    {
-        vector<string> foo;
-        string cur;
+    string simplifyPath(string path) {
+        stack <string> s;
         string res;
-        path += "/"; /* simplifies code as do not need to check cur at end */
-        for (int i = 1; i < path.size(); i++) {
-            char c = path[i];
-            if (c != '/')
-                cur += c;
-            else {
-                
-                if (cur == "..") {
-                if (foo.size() > 0) foo.pop_back();
-                }
-                else if (cur  != "" && cur != ".")
-                    foo.push_back(cur);
-             
-            cur = "";
-            }   
+        
+        
+        for(int i=0; i<path.size(); ++i){
+            if(path[i] == '/')
+                continue;
+            
+            string temp;
+            while(i<path.size() && path[i] != '/'){
+                temp += path[i];
+                ++i;
+            }
+                  
+            if(temp == ".")
+                continue;
+            else if(temp == ".."){
+                if(!s.empty())
+                    s.pop();
+            }
+            else
+                s.push(temp);
         }
-        if (foo.size() == 0) return "/";
-        for (auto &x : foo) 
-            res += "/" + x;
+                  
+        
+        while(!s.empty()){
+            res = "/" + s.top() + res;
+            s.pop();
+        }
+        
+        if(res.size() == 0)
+            return "/";
         
         return res;
     }
 };
+
+    
+          
