@@ -1,31 +1,32 @@
 class Solution {
 public:
     int calculate(string s) {
-        int i = 0, ans = 0, num = 0;
-        int interim = 0;
+        int ans=0, interim=0;
         char op = '+';
-        while(i < s.size()){
-            if(isdigit(s[i])){
-                num = 0;
-                while(i < s.size() && isdigit(s[i]))
-                    num = num * 10 + (s[i++] - '0');
+        
+        for(int i=0; i<s.size(); i++){
+            if(s[i] == ' ')
+                continue;
+            else if(!isdigit(s[i]))
+                op = s[i];
+            else{
+                int num=0;
+                while(i<s.size() && isdigit(s[i]))
+                    num = num*10 + (s[i++]-'0');
                 
-                if(op == '+' || op == '-'){
-                    ans += interim;
-                    interim = num * (op == '-' ? -1 : 1);
-                }else if(op == '*')
+                if(op == '*')
                     interim *= num;
                 else if(op == '/')
                     interim /= num;
-                continue;
+                else{
+                    ans += interim;
+                    interim = num*(op == '+'?1:-1);
+                }
+                i--;
             }
-            else if(s[i] != ' ') 
-                op = s[i];
-           
-            i++;
-        }    
-
-        ans += interim;            
+        }
+        
+        ans += interim;
         return ans;
     }
 };
