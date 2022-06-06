@@ -1,25 +1,32 @@
 class Solution {
 public:
-    int calculate(string& s) {
-        int cur = 0, ans = 0, interimRes = 0;
-        char prevOp = '+';
-        s += "##";                                     
-        for(auto c : s)
-            if(c == ' ') continue;
-            else if(isdigit(c)) 
-                cur = cur * 10 + (c-'0');
-            else {
-                if(prevOp == '*')                      // '*':  Case-1
-                    interimRes *= cur;
-                else if(prevOp == '/')                 // '/':  Case-1
-                    interimRes /= cur;
-                else                                   // '+' and '-':  Case-2
-                    ans += interimRes, interimRes = prevOp == '+' ? cur : -cur;
-                prevOp = c;
-                cur = 0;
-                cout<<cur<<ans<<interimRes<<prevOp;
+    int calculate(string s) {
+        int i = 0, ans = 0, num = 0;
+        int interim = 0;
+        char op = '+';
+        while(i < s.size()){
+            if(isdigit(s[i])){
+                num = 0;
+                while(i < s.size() && isdigit(s[i])){
+                    num = num * 10 + (s[i] - '0');
+                    i++;
+                }
+                if(op == '+' || op == '-'){
+                    ans += interim;
+                    interim = num * (op == '-' ? -1 : 1);
+                }else if(op == '*'){
+                    interim *= num;
+                }else if(op == '/'){
+                    interim /= num;
+                }
+                continue;
             }
+            else if(s[i] != ' ') op = s[i];
+           
+            i++;
+        }    
 
+        ans += interim;            
         return ans;
     }
 };
