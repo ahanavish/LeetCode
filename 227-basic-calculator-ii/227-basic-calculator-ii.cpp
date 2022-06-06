@@ -7,21 +7,20 @@ public:
         while(i < s.size()){
             if(isdigit(s[i])){
                 num = 0;
-                while(i < s.size() && isdigit(s[i])){
-                    num = num * 10 + (s[i] - '0');
-                    i++;
-                }
+                while(i < s.size() && isdigit(s[i]))
+                    num = num * 10 + (s[i++] - '0');
+                
                 if(op == '+' || op == '-'){
                     ans += interim;
                     interim = num * (op == '-' ? -1 : 1);
-                }else if(op == '*'){
+                }else if(op == '*')
                     interim *= num;
-                }else if(op == '/'){
+                else if(op == '/')
                     interim /= num;
-                }
                 continue;
             }
-            else if(s[i] != ' ') op = s[i];
+            else if(s[i] != ' ') 
+                op = s[i];
            
             i++;
         }    
