@@ -8,14 +8,11 @@ public:
         if(num == 0)
             return "Zero";
         
-        for(auto it: nums){
-            if(num >= it.first){
+        for(auto it: nums)
+            if(num >= it.first)
                 return (num >= 100 ? numberToWords(num/it.first)+" " : "") + it.second + 
                 (num%it.first == 0 ? "" : " "+numberToWords(num%it.first));
-            }
-            else
-                continue;
-        }
+    
         return "";
     }
 };
