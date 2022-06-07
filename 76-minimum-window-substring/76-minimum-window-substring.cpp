@@ -16,10 +16,8 @@ public:
             mapt[s[high]]--;
             
             if(counter == t.length()){
-                while(mapt[s[low]]<0 && low<high){
-                    mapt[s[low]]++;
-                    low++;
-                }
+                while(mapt[s[low]]<0 && low<high)
+                    mapt[s[low++]]++;
                 
                 if(minlength>high-low+1){
                     minlength = high-low+1;
