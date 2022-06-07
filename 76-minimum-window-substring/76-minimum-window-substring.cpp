@@ -6,7 +6,7 @@ public:
         
         int low=0, start=0, minlength=INT_MAX, counter=0;
         unordered_map <char, int> mapt;
-        for(int i=0; i<t.length(); i++) 
+        for(int i=0; i<t.length(); i++)
             mapt[t[i]]++;
         
         for(int high=0; high<s.length(); high++){ 
@@ -29,6 +29,5 @@ public:
         return minlength == INT_MAX? "" : s.substr(start, minlength);
     }
 };
-
-
- 
+        
+       
