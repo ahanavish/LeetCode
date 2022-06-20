@@ -1,16 +1,19 @@
 class Solution {
 public:
     bool canJump(vector<int>& nums) {
-        int n=nums.size();
-        int goal=n-1;
-        for(int i=n-2;i>=0;i--)
-            if(i+nums[i]>=goal)
-                goal=i;
-
-        if(goal==0)
-            return true;
-        else
-            return false;
+        int goal = nums.size()-1;
+        
+        while(goal != 0){
+            int i;
+            for(i= goal-1; i>=0; i--)
+                if(goal <= i+nums[i]){
+                    goal = i;
+                    break;
+                }    
+            if(i == -1)
+                return false;
+        }
+        
+        return true;
     }
 };
-
