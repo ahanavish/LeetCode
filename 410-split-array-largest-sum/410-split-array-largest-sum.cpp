@@ -1,41 +1,30 @@
 class Solution {
 public:
-    bool possibleSum(int mid, vector<int> &nums, int limit){
-        int total = 0;
-        int subArrays = 1;
+    int splitArray(vector<int>& nums, int m) {
+        int low=0, high=0;
         
         for(int i=0; i<nums.size(); i++){
-             if(nums[i] > mid)
-            return false;
-        
-            else if(nums[i] + total > mid){
-                subArrays++;
-                total = nums[i];
-            }
-            else
-                total += nums[i];
+            low = max(low, nums[i]);
+            high += nums[i];
         }
-        
-        return subArrays <= limit;
-    }
-    
-    
-    int splitArray(vector<int>& nums, int m) {
-        int ans = 0;
-        
-        int low = 0;
-        int high = 1e9;
         
         while(low <= high){
-            int mid = (low+high)/2;
-            if(possibleSum(mid, nums, m)){
-                high = mid-1;
-                ans = mid;
+            int mid = (low+high)/2, count = 1, temp_sum=nums[0];
+            for(int i=1; i<nums.size(); i++){
+                if(temp_sum + nums[i] > mid){
+                    count++;
+                    temp_sum = nums[i];
+                }
+                else
+                    temp_sum += nums[i];
             }
-            else
+            
+            if(count> m)
                 low = mid+1;
+            else
+                high = mid-1;
         }
         
-        return ans;
+        return low;
     }
 };
