@@ -8,7 +8,7 @@ public:
         for(int i = 1; i < N; ++i){
             for(int j = 0; j < i; ++j){
                 int diff = stones[i] - stones[j];
-                if(diff < 0 || diff > N || !dp[j][diff]) 
+                if(diff > N || !dp[j][diff]) 
                     continue;
                 
                 if(i == N - 1) 
