@@ -14,21 +14,9 @@ public:
     bool isSameTree(TreeNode* p, TreeNode* q) {
         if(!p && !q)
             return true;
-        if(!p || !q)
+        if(!p || !q || p->val != q->val)
             return false;
-        
-        return func(p, q);
-    }
-    
-    bool func(TreeNode* p, TreeNode* q){
-        if(!p && !q)
-            return true;
-        if(!p || !q)
-            return false;
-        
-        if(p->val == q->val)
-            return func(p->left, q->left) && func(p->right, q->right);
-        
-        return false;
+
+        return (isSameTree(p->left, q->left) && isSameTree(p->right, q->right));
     }
 };
