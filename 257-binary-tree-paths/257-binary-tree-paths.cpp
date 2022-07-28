@@ -18,11 +18,14 @@ public:
     }
     
     void func(string s, TreeNode* root, vector<string> &ans){ 
+        if(!root->left && !root->right){
+            ans.push_back(s);
+            return;
+        }
+            
         if(root->left)
             func(s+"->"+to_string(root->left->val), root->left, ans);
         if(root->right)
             func(s+"->"+to_string(root->right->val), root->right, ans);
-        if(!root->left && !root->right)
-            ans.push_back(s);
     }
 };
