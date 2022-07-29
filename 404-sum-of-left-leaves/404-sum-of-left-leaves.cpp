@@ -18,15 +18,16 @@ public:
     }
     
     void func(TreeNode* root, int take, int &sum){
-        if(take==1 && !root->left && !root->right){
-            sum += root->val;
+        if(!root)
+            return;
+        
+        if(!root->left && !root->right){
+            if(take==1)
+                sum += root->val;
             return;
         }
         
-        if(root->left)
-            func(root->left, 1, sum);
-        
-        if(root->right)
-            func(root->right, 0, sum);
+        func(root->left, 1, sum);
+        func(root->right, 0, sum);
     }
 };
