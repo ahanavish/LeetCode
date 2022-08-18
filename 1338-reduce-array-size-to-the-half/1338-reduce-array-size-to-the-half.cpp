@@ -5,13 +5,13 @@ public:
         for(int a : arr)
             m[a]++;
         
-        priority_queue<pair<int, int>> pq;
+        priority_queue<int> pq;
         for(auto p : m)
-            pq.push({p.second, p.first});
+            pq.push(p.second);
         
         int n=0, size=pq.size();
         while(!pq.empty() && n<arr.size()/2){
-            n += pq.top().first;
+            n += pq.top();
             pq.pop();
         }
         
